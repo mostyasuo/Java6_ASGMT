@@ -15,10 +15,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import Dao.AccountDAO;
 import Service.CookieService;
-import jakarta.mail.Message;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import model.Account;
+import model.Message;
 
 @Controller
 @RequestMapping("/client")
@@ -41,22 +41,22 @@ public class LoginController {
         return "index/login";
     }
 
-    @GetMapping("/signin/success")
-    public String success(Model model, HttpServletResponse response) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
-            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+    // @GetMapping("/signin/success")
+    // public String success(Model model, HttpServletResponse response) {
+    //     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    //     if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
+    //         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 
-            // Sử dụng thông tin userDetails
-            String username = userDetails.getUsername();
-            Account account = accountDAO.findById(username).get();
-            cookieService.setCookie(response, "username", processString(account.getUsername()), 3600);
-            System.out.println("Đăng nhập LOCAL thành công");
-            return "redirect:/client/index";
-        } else {
-            return "redirect:/client/signin";
-        }
-    }
+    //         // Sử dụng thông tin userDetails
+    //         String username = userDetails.getUsername();
+    //         Account account = accountDAO.findById(username).get();
+    //         cookieService.setCookie(response, "username", processString(account.getUsername()), 3600);
+    //         System.out.println("Đăng nhập LOCAL thành công");
+    //         return "redirect:/client/index";
+    //     } else {
+    //         return "redirect:/client/signin";
+    //     }
+    // }
 
     @GetMapping("/signin/error")
     public String error(RedirectAttributes redirectAttributes, HttpServletRequest request) {
@@ -72,11 +72,11 @@ public class LoginController {
         return "redirect:/client/signin";
     }
 
-    @GetMapping("/denied")
-    public String denied(Model model) {
-        System.out.println("Bạn không có đủ quyền");
-        return "redirect:/client/error";
-    }
+    // @GetMapping("/denied")
+    // public String denied(Model model) {
+    //     System.out.println("Bạn không có đủ quyền");
+    //     return "redirect:/client/error";
+    // }
 
     public static String processString(String input) {
         String normalized = Normalizer.normalize(input, Normalizer.Form.NFD);
