@@ -1,5 +1,7 @@
 package Dao;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -15,4 +17,7 @@ public interface AccountDAO extends JpaRepository<Account, String> {
     int getQtyCartByUsername(String username); 
     
     Account findByEmail(String email);
+    
+    @Query("SELECT DISTINCT ar.account  FROM Roles ar WHERE ar.role.id IN ('director', 'staff','user')")
+	List<Account> getAdministrators();
 }
